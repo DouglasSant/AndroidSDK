@@ -39,12 +39,14 @@ public final class VerifyMyAgeVerificationFlow : AppCompatActivity() {
             );
             var response = vmaApi.verifications(customer)
 
-            //TODO: remove from here, just for test
+            //TODO:
+            // 1. it is here just for tests, remove it from here and use it after face recognized
+            // 2. Replace R.drawable.face_test with the face detected image
             val bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_test)
             vmaApi.faceUpdate(response.getString("hash"), bitmap)
 
             val intent = Intent(this, VerificationsResultActivity::class.java).apply {
-                putExtra("REAUTHENTICATE", response.getString("reauthenticate"))
+                putExtra("REAUTHENTICATE", response.getBoolean("reauthenticate"))
                 putExtra("CLIENT_ID", response.getString("client_id"))
                 putExtra("STATUS", response.getString("status"))
                 putExtra("URL", response.getString("url"))
