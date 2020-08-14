@@ -1,8 +1,10 @@
 package uk.co.verifymyage.sdk
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -35,7 +37,12 @@ public final class VerifyMyAgeVerificationFlow : AppCompatActivity() {
                 intent.getStringExtra("email").toString(),
                 intent.getStringExtra("phone").toString()
             );
-            var response = vmaApi.request("POST", "/verifications", customer)
+            var response = vmaApi.verifications(customer)
+
+            //TODO: remove from here, just for test
+            val bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face_test)
+            vmaApi.faceUpdate(response.getString("hash"), bitmap)
+
             val intent = Intent(this, VerificationsResultActivity::class.java).apply {
                 putExtra("REAUTHENTICATE", response.getString("reauthenticate"))
                 putExtra("CLIENT_ID", response.getString("client_id"))

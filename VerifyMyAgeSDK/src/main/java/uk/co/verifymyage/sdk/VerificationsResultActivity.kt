@@ -13,7 +13,7 @@ import uk.co.verifymyage.sdk.zoomprocessors.LivenessCheckProcessor
 
 class VerificationsResultActivity : AppCompatActivity() {
 
-    private var verificationResult = false;
+    private var isToReautheticate = false;
     private var sessionTokenErrorCallback = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +26,8 @@ class VerificationsResultActivity : AppCompatActivity() {
             window.statusBarColor = Color.parseColor("#fbc359")
         };
 
-        verificationResult = intent.getStringExtra("REAUTHENTICATE") != null && intent.getStringExtra("REAUTHENTICATE") == "true";
-        if (verificationResult) {
+        isToReautheticate = intent.getBooleanExtra("REAUTHENTICATE", false);
+        if (!isToReautheticate) {
             successText.text = "Success";
             titleText.text = "Select continue to open camera to take a photo"
             subTitleText.text = "Your photo will be used to confirm you've verified your age for future shopping."
@@ -35,7 +35,7 @@ class VerificationsResultActivity : AppCompatActivity() {
     }
 
     fun onContinueClick(v: View) {
-        if (!verificationResult) {
+        if (isToReautheticate) {
             val intent = Intent(this, VerifyOptionsActivity::class.java).apply {
                 putExtra("VERIFICATION_RESULT", true)
             }
